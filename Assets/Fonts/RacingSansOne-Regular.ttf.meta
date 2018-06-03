@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: fb4cf705e62aa04498147223fa2e5208
+timeCreated: 1527472195
+licenseType: Pro
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Racing Sans One
+  fontNames:
+  - Racing Sans One
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
