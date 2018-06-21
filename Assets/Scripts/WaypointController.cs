@@ -4,15 +4,32 @@ using UnityEngine;
 
 public class WaypointController : MonoBehaviour {
 
+	public bool isZeroCheckpoint;
 
+	public int count = 1;
+	public int lap = 0;
+	public int WaypointCheckpoint(int currentLap, int currPos)
+	{
+		int returnCount;
+		if (lap == currentLap) {
+			if (count < 15) {
+				count++;
+				return count-1;
+			} else {
+				lap++;
+				count = 1;
 
-	// Use this for initialization
-	void Start () {
+				return count-1;
+			}
+		} 
+		else 
+		{
+			if (currPos == 1 && currentLap > lap) {
+				lap++;
+				count = 1;
+			}
+			return currPos;
+		}
 
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
 	}
 }
