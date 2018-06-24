@@ -92,13 +92,13 @@ public class AIControllerTrack : MonoBehaviour {
 	private void ApplySteer()
 	{		
 		Vector3 relativeVector = transform.InverseTransformPoint (nexPos);
-		float newSteer = (relativeVector.x / relativeVector.magnitude) * maxSteerAngle;
+		float newSteer = (relativeVector.x / relativeVector.magnitude) * maxSteerAngle ;
 		targetSteerAngle = newSteer;
 	}
 
 	private void Braking()
 	{
-		if ((isAvoiding && currentSpeed > maxTurnSpeed*1.5f) || targetSteerAngle > maxSteerAngle*.75f) {
+		if ((isAvoiding && currentSpeed > maxTurnSpeed) || (Mathf.Abs(targetSteerAngle*2) > maxSteerAngle)&& currentSpeed > maxTurnSpeed/10) {
 			isBraking = true;
 			brakingMultiplier = Mathf.Abs (avoidMultiplier) * currentSpeed / maxSpeed;
 		} else {
@@ -122,7 +122,7 @@ public class AIControllerTrack : MonoBehaviour {
 		
 	private void CheckWaypointDistance()
 	{
-		if (Vector3.Distance (transform.position, nexPos) < 10) {
+		if (Vector3.Distance (transform.position, nexPos) <12) {
 
 			if (currentNode == nodes.Count - 1) {
 				currentLapCount++;
@@ -195,7 +195,7 @@ public class AIControllerTrack : MonoBehaviour {
 		 if (Physics.Raycast (sensorStartPos, Quaternion.AngleAxis(frontSensorAngle, transform.up) * transform.forward, out hit , sensorLength)) {
 			if(hit.collider.CompareTag("Cars")){
 				isAvoiding = true;
-				avoidMultiplier -= .01f;
+				avoidMultiplier -= .1f;
 				Debug.DrawLine (sensorStartPos, hit.point);
 			}
 		}
@@ -214,20 +214,20 @@ public class AIControllerTrack : MonoBehaviour {
 	   if (Physics.Raycast (sensorStartPos, Quaternion.AngleAxis(-frontSensorAngle, transform.up) * transform.forward, out hit , sensorLength)) {
 			if (hit.collider.CompareTag ("Cars")) {
 				isAvoiding = true;
-				avoidMultiplier += .01f;
+				avoidMultiplier += .1f;
 				Debug.DrawLine (sensorStartPos, hit.point);
 			}
 		}
 
-		if(avoidMultiplier == 0){
+		if (avoidMultiplier == 0 ||(currentSpeed < 1 && startedMoving)){
 			if (Physics.Raycast (sensorStartPos, transform.forward, out hit, sensorLength * 2)) {
 				if (hit.collider.CompareTag ("Cars")) {
 					isFrontAvoiding = true;
 					isAvoiding = true;
 					if (hit.normal.x < 0)
-						avoidMultiplier = -.1f;
+						avoidMultiplier -= 1f;
 					else
-						avoidMultiplier = .1f;
+						avoidMultiplier += 1f;
 
 					Debug.DrawLine (sensorStartPos, hit.point);
 				}
@@ -239,10 +239,10 @@ public class AIControllerTrack : MonoBehaviour {
 	{
 		if (isAvoiding) 
 		{
-			targetSteerAngle = maxSteerAngle * avoidMultiplier;
+			targetSteerAngle *= avoidMultiplier;
 		}
 
-		wheelFL.steerAngle = Mathf.Lerp (wheelFL.steerAngle, targetSteerAngle, Time.deltaTime * maxTurnSpeed);
-		wheelFR.steerAngle = Mathf.Lerp (wheelFR.steerAngle, targetSteerAngle, Time.deltaTime * maxTurnSpeed);
+		wheelFL.steerAngle = Mathf.Lerp (wheelFL.steerAngle, targetSteerAngle, Time.deltaTime * maxSteerAngle);
+		wheelFR.steerAngle = Mathf.Lerp (wheelFR.steerAngle, targetSteerAngle, Time.deltaTime * maxSteerAngle);
 	}
 }

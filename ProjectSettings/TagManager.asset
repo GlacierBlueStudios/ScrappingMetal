@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Cars
   - Obstacles
+  - OffRoad
   layers:
   - Default
   - TransparentFX
