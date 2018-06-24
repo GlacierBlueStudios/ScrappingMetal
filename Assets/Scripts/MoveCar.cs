@@ -8,7 +8,7 @@ public class MoveCar : MoveCarBehavior
 	void Update ()
     {
 
-        if(!networkObject.IsServer)
+        if(!networkObject.IsOwner)
         {
             transform.position = networkObject.position;
             return;

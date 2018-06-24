@@ -155,7 +155,6 @@ public class MultiplayerMenu : MonoBehaviour
 		{
 			Debug.Log("Player " + player.NetworkId + " timed out");
 		};
-		//LobbyService.Instance.Initialize(server);
 
 		Connected(server);
 	}
