@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using BeardedManStudios.Forge.Networking.Generated;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour {
+public class PlayerController : MoveCarBehavior {
 
 	[Header("Car Parts")]
 	public Transform carBody;
@@ -88,7 +89,14 @@ public class PlayerController : MonoBehaviour {
 
 	// Update is called once per frame
 	void FixedUpdate () {
-		currentThrust = Input.GetAxis ("Accel");
+
+        if (!networkObject.IsOwner)
+        {
+            transform.position = networkObject.position;
+            return;
+        }
+
+        currentThrust = Input.GetAxis ("Accel");
 		currentSteering = Input.GetAxis("Horizontal");
 
 		if (currentThrust <= 0 && currentSpeed > 0) 
@@ -127,7 +135,9 @@ public class PlayerController : MonoBehaviour {
 		ApplySteering();
 
 		RotateWheels (relVel);
-	}
+
+        networkObject.position = transform.position;
+    }
 	#endregion
 
 	#region VisualFunctions
