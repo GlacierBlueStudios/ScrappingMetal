@@ -5,7 +5,17 @@ using BeardedManStudios.Forge.Networking.Unity;
 
 public class GameManager : MonoBehaviour {
 
-	void Start () {
-        NetworkManager.Instance.InstantiateMoveCar();
+    public GameObject car;
+
+	void Start ()
+    {
+        if(Application.isEditor)
+        {
+            GameObject wreckClone = (GameObject)Instantiate(car, transform.position, transform.rotation);
+        }
+        else
+        {
+            NetworkManager.Instance.InstantiateMoveCar();
+        }
     }
 }

@@ -90,7 +90,7 @@ public class PlayerController : MoveCarBehavior {
 	// Update is called once per frame
 	void FixedUpdate () {
 
-        if (!networkObject.IsOwner)
+        if (networkObject != null && !networkObject.IsOwner)
         {
             transform.position = networkObject.position;
             return;
@@ -136,7 +136,10 @@ public class PlayerController : MoveCarBehavior {
 
 		RotateWheels (relVel);
 
-        networkObject.position = transform.position;
+        if(networkObject != null)
+        {
+            networkObject.position = transform.position;
+        }
     }
 	#endregion
 
